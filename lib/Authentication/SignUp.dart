@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_eats/Db/Services/AuthService.dart';
 import 'package:get/get.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -12,6 +13,7 @@ class _SignUpState extends State<SignUp> {
   final phone_numer = TextEditingController();
   final password_controller = TextEditingController();
   final mail_controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,24 +71,18 @@ class _SignUpState extends State<SignUp> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5)),
                 onPressed: () async {
-                  // await AuthService()
-                  //     .addNew(
-                  //     phone_numer.text.toString().trim(),
-                  //     password_controller.text.toString().trim(),
-                  //     mail_controller.text.toString().trim())
-                  //     .then((val) => {
-                  //   if (val.data['msg'])
-                  //     {
-                  //       Get.toNamed('/dashboard'),
-                  //       // Fluttertoast.showToast(
-                  //       //     msg: val.data['msg'].toString(),
-                  //       //     toastLength: Toast.LENGTH_LONG,
-                  //       //     gravity: ToastGravity.BOTTOM,
-                  //       //     backgroundColor: Colors.grey,
-                  //       //     textColor: Colors.white,
-                  //       //     fontSize: 16.0)
-                  //     }
-                  // });
+                  await AuthService()
+                      .register(
+                          phone_numer.text.toString().trim(),
+                          password_controller.text.toString().trim(),
+                          mail_controller.text.toString().trim())
+                      .then((val) => {
+                            if (val.data['success'])
+                              {
+                                saveLogin(val.data['msg']),
+                                Get.toNamed('/dashboard'),
+                              }
+                          });
                 },
               ),
             ),
@@ -100,5 +96,13 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+
+  saveLogin(token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      prefs.setString('token', token);
+      print(prefs.getString('token'));
+    });
   }
 }

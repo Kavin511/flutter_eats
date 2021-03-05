@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eats/Authentication/Login.dart';
 import 'package:flutter_eats/Authentication/SignUp.dart';
+import 'file:///D:/C%20files/AndroidStudioProjects/flutter_eats/lib/DashBoard/Hotel/Hotel/HotelDetails.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
     GetPage(name: '/', page: () => LoginPage()),
     GetPage(name: '/signUp', page: () => SignUp()),
     GetPage(name: '/dashboard', page: () => Dashboard()),
-    // GetPage(name: '/profileComplete', page: () => ProfileCompletion()),
+    GetPage(name: '/hotelDetails', page: () => HotelDetails()),
     // GetPage(name: '/menu', page: () => AddMenu(), curve: Curves.fastOutSlowIn),
   ];
   final token;

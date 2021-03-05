@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_eats/Db/Model/LoginModel.dart';
+import 'package:flutter_eats/Db/Services/AuthService.dart';
 import 'package:flutter_eats/Db/bloc/LoginAuthBloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,35 +55,16 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 12.0),
             CupertinoButton.filled(
               onPressed: () async {
-                login.mobileNumber=phone_number.text;
-                login.password=password_controller.text;
-                loginBloc.doLogin(login);
-                // AuthService().test().then((val) => {print(val)});
-                // AuthService()
-                //     .login(phone_number.text.toString().trim(),
-                //     password_controller.text.toString().trim())
-                //     .then((val) => {
-                //   // if (val.data['success'])
-                //   //   {
-                //   AuthService()
-                //       .getInfo(val.data['msg'])
-                //       .then((value) => {
-                //     if (value.data['success'])
-                //       {
-                //         saveLogin(val.data['msg']),
-                //         Get.toNamed('/dashboard'),
-                //         // Fluttertoast.showToast(
-                //         //     msg: "Logged in successfully!",
-                //         //     toastLength: Toast.LENGTH_LONG,
-                //         //     gravity: ToastGravity.BOTTOM,
-                //         //     backgroundColor: Colors.grey,
-                //         //     textColor: Colors.white,
-                //         //     fontSize: 16.0)
-                //       }
-                //   })
-                //   // Get.toNamed('/dashboard')
-                //   // }
-                // });
+                AuthService()
+                    .login(phone_number.text.toString().trim(),
+                        password_controller.text.toString().trim())
+                    .then((val) => {
+                          if (val.data['success'])
+                            {
+                              saveLogin(val.data['msg']),
+                              Get.offAndToNamed('/dashboard'),
+                            }
+                        });
               },
               child: Text('Login'),
             ),

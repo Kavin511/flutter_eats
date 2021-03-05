@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_eats/DashBoard/Home.dart';
+import 'package:flutter_eats/DashBoard/Hotel/Hotel/Home.dart';
 import 'package:flutter_eats/DashBoard/Orders.dart';
 import 'package:flutter_eats/DashBoard/Profile.dart';
-
-
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
@@ -12,8 +10,8 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int _pageIndex = 0;
-  String text = "Hotel";
-  List<Widget> tabList = [Home(), Order(),Profile()];
+  String text = "Restaurants";
+  List<Widget> tabList = [Home(), Order(), Profile()];
   PageController _pageController;
 
   @override
@@ -51,10 +49,9 @@ class _DashboardState extends State<Dashboard> {
           currentIndex: _pageIndex,
           items: [
             BottomNavigationBarItem(
-                icon: Icon(Icons.restaurant), title: Text('Hotel')),
+                icon: Icon(Icons.restaurant), title: Text('Restaurants')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart),
-                title: Text('Cart')),
+                icon: Icon(Icons.shopping_cart), title: Text('Cart')),
             BottomNavigationBarItem(
                 icon: Icon(Icons.person), title: Text('Profile'))
           ],
@@ -71,7 +68,8 @@ class _DashboardState extends State<Dashboard> {
   void onPageChange(int value) {
     setState(() {
       this._pageIndex = value;
-      this.text = value == 0 ? "Hotels" : (value == 1 ? "Cart" : "Profile");
+      this.text =
+          value == 0 ? "Restaurants" : (value == 1 ? "Cart" : "Profile");
     });
   }
 }
