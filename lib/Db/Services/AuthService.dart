@@ -1,7 +1,7 @@
+
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
-
 class AuthService {
   Dio dio = new Dio();
   String base_URL = "https://fluttereats.herokuapp.com/flutterEats";
@@ -19,19 +19,17 @@ class AuthService {
 
   register(mobileNumber, password, String email) async {
     try {
+      print('reg');
       return await dio.post(base_URL + "/register", data: {
         "mobileNumber": mobileNumber,
         "password": password,
         "email": email
       });
     } on DioError catch (e) {
-      // Fluttertoast.showToast(
-      //     msg: e.toString(),
-      //     toastLength: Toast.LENGTH_LONG,
-      //     gravity: ToastGravity.BOTTOM,
-      //     backgroundColor: Colors.grey,
-      //     textColor: Colors.white,
-      //     fontSize: 16.0);
+      BuildContext context;
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
     }
   }
 

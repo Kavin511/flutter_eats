@@ -60,16 +60,14 @@ class _HotelDetailsState extends State<HotelDetails> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(35),
                         shape: BoxShape.rectangle,
-
                         boxShadow: [
                           BoxShadow(
                             offset: const Offset(3.0, 3.0),
-                              spreadRadius: 4,
-                              blurRadius: 8,
+                            spreadRadius: 4,
+                            blurRadius: 8,
                             color: Colors.black.withOpacity(.2),
                           )
-                        ]
-                    ),
+                        ]),
                     width: size.width * .8,
                     height: 75,
                     // decoration: BoxDecoration(
@@ -133,7 +131,6 @@ class _HotelDetailsState extends State<HotelDetails> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -154,10 +151,8 @@ class _HotelDetailsState extends State<HotelDetails> {
                           BoxShadow(
                               spreadRadius: 3,
                               blurRadius: 4,
-                              color: Colors.black12
-                          )
-                        ]
-                    ),
+                              color: Colors.black12)
+                        ]),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -177,17 +172,15 @@ class _HotelDetailsState extends State<HotelDetails> {
                   padding: const EdgeInsets.all(5.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      shape: BoxShape.rectangle,
-                      boxShadow: [
-                        BoxShadow(
-                          spreadRadius: 3,
-                          blurRadius: 4,
-                          color: Colors.black12
-                        )
-                      ]
-                    ),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        shape: BoxShape.rectangle,
+                        boxShadow: [
+                          BoxShadow(
+                              spreadRadius: 3,
+                              blurRadius: 4,
+                              color: Colors.black12)
+                        ]),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -214,10 +207,8 @@ class _HotelDetailsState extends State<HotelDetails> {
                           BoxShadow(
                               spreadRadius: 3,
                               blurRadius: 4,
-                              color: Colors.black12
-                          )
-                        ]
-                    ),
+                              color: Colors.black12)
+                        ]),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -244,10 +235,8 @@ class _HotelDetailsState extends State<HotelDetails> {
                           BoxShadow(
                               spreadRadius: 3,
                               blurRadius: 4,
-                              color: Colors.black12
-                          )
-                        ]
-                    ),
+                              color: Colors.black12)
+                        ]),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(

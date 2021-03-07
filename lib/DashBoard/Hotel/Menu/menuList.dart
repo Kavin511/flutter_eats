@@ -20,13 +20,13 @@ class _MenuListState extends State<MenuList> {
     print(widget.menuData);
     return widget.menuData.length > 0
         ? Container(
-          child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: widget.menuData.length,
-              itemBuilder: (context, index) =>
-                  MenuCard(menu: widget.menuData[index])),
-        )
+            child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.menuData.length,
+                itemBuilder: (context, index) =>
+                    MenuCard(menu: widget.menuData[index])),
+          )
         : Center(
             child: Text(
             'No items found please add menu',

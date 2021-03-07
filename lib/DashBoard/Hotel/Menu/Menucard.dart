@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_eats/Db/Model/MenuModal.dart';
 
 class MenuCard extends StatefulWidget {
+  
   Menu menu;
   MenuCard({
     this.menu
