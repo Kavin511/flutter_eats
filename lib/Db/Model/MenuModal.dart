@@ -19,7 +19,6 @@ class Menu {
 
   Menu.fromJson(Map<String, dynamic> json) {
     foodName = json['foodName'];
-    print(foodName);
     foodDesc = json['foodDesc'];
     category = json['category'];
     price = json['price'];

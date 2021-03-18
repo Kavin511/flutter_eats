@@ -34,7 +34,7 @@ class _HotelDetailsState extends State<HotelDetails> {
             color: Colors.white,
             child: Stack(
               children: [
-                new Container(
+                Container(
                   width: size.width,
                   height: size.height * .5 - 25,
                   decoration: new BoxDecoration(
@@ -62,24 +62,13 @@ class _HotelDetailsState extends State<HotelDetails> {
                         shape: BoxShape.rectangle,
                         boxShadow: [
                           BoxShadow(
-                            offset: const Offset(3.0, 3.0),
-                            spreadRadius: 4,
-                            blurRadius: 8,
-                            color: Colors.black.withOpacity(.2),
-                          )
+                              offset: const Offset(3.0, 3.0),
+                              spreadRadius: 8,
+                              blurRadius: 10,
+                              color: Colors.blue.withOpacity(.1))
                         ]),
                     width: size.width * .8,
                     height: 75,
-                    // decoration: BoxDecoration(
-                    //   color: Colors.white,
-                    //   borderRadius: BorderRadius.circular(50),
-                    //   boxShadow: [
-                    //     BoxShadow(
-                    //       blurRadius: 5,
-                    //       color: Colors.black.withOpacity(.2),
-                    //     ),
-                    //   ],
-                    // ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -111,7 +100,7 @@ class _HotelDetailsState extends State<HotelDetails> {
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -149,9 +138,9 @@ class _HotelDetailsState extends State<HotelDetails> {
                         shape: BoxShape.rectangle,
                         boxShadow: [
                           BoxShadow(
-                              spreadRadius: 3,
-                              blurRadius: 4,
-                              color: Colors.black12)
+                              spreadRadius: 1,
+                              blurRadius: 10,
+                              color: Colors.lightBlueAccent.withOpacity(.2))
                         ]),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -177,9 +166,9 @@ class _HotelDetailsState extends State<HotelDetails> {
                         shape: BoxShape.rectangle,
                         boxShadow: [
                           BoxShadow(
-                              spreadRadius: 3,
-                              blurRadius: 4,
-                              color: Colors.black12)
+                              spreadRadius: 1,
+                              blurRadius: 10,
+                              color: Colors.lightBlueAccent.withOpacity(.2))
                         ]),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -205,9 +194,9 @@ class _HotelDetailsState extends State<HotelDetails> {
                         shape: BoxShape.rectangle,
                         boxShadow: [
                           BoxShadow(
-                              spreadRadius: 3,
-                              blurRadius: 4,
-                              color: Colors.black12)
+                              spreadRadius: 1,
+                              blurRadius: 10,
+                              color: Colors.lightBlueAccent.withOpacity(.2))
                         ]),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -233,9 +222,9 @@ class _HotelDetailsState extends State<HotelDetails> {
                         shape: BoxShape.rectangle,
                         boxShadow: [
                           BoxShadow(
-                              spreadRadius: 3,
-                              blurRadius: 4,
-                              color: Colors.black12)
+                              spreadRadius: 1,
+                              blurRadius: 10,
+                              color: Colors.lightBlueAccent.withOpacity(.2))
                         ]),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -259,7 +248,8 @@ class _HotelDetailsState extends State<HotelDetails> {
             height: 5,
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding:
+                const EdgeInsets.only(left: 20, top: 8, bottom: 8, right: 8),
             child: RichText(
                 text: TextSpan(
                     text: 'Menu',
@@ -272,7 +262,7 @@ class _HotelDetailsState extends State<HotelDetails> {
                 ])),
           ),
           SizedBox(
-            height: 200,
+            height: 250,
             child: StreamBuilder<MenuApiResponse>(
                 stream: menuBloc.menuListStream,
                 builder: (context, snapshot) {
@@ -293,7 +283,9 @@ class _HotelDetailsState extends State<HotelDetails> {
                         break;
                       case Status.COMPLETED:
                         print('completed');
-                        return MenuList(menuData: snapshot.data.data);
+                        return MenuList(
+                            menuData: snapshot.data.data,
+                            hotelData: widget.hotel);
                         break;
                       case Status.ERROR:
                         print('error do');

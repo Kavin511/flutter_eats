@@ -27,34 +27,37 @@ class _HotelCardState extends State<HotelCard> {
                 child: Center(
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: ListTile(
-                      isThreeLine: true,
-                      dense: true,
-                      title: Text(
-                        widget.hotel.hotelName,
-                        maxLines: 2,
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.0,
-                          color: Colors.black87,
+                    child: Column(
+                      children: [
+                        ListTile(
+                          isThreeLine: true,
+                          dense: true,
+                          title: Text(
+                            widget.hotel.hotelName,
+                            maxLines: 2,
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.0,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          subtitle: Text(
+                            widget.hotel.address,
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          leading:CircleAvatar(
+                            backgroundColor: Colors.orangeAccent,
+                            backgroundImage: AssetImage('images/hotels.jpg'),
+                          ),
                         ),
-                      ),
-                      subtitle: Text(
-                        widget.hotel.address,
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      leading:Container(
-                        child: CircleAvatar(
-                          backgroundColor: Colors.orangeAccent,
-                          backgroundImage: AssetImage('images/hotels.jpg'),
-                        ),
-                      ),
+
+                      ],
                     ),
                   ),
 

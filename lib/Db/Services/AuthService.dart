@@ -11,12 +11,9 @@ class AuthService {
           data: {"mobileNumber": mobileNumber, "password": password},
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
-      print(e);
+    print(e);
     }
   }
-
-
-
   register(mobileNumber, password, String email) async {
     try {
       print('reg');

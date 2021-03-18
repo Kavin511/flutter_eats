@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_eats/DashBoard/Hotel/Menu/Menucard.dart';
+import 'package:flutter_eats/Db/Model/HotelModal.dart';
 import 'package:flutter_eats/Db/Model/MenuModal.dart';
 
 class MenuList extends StatefulWidget {
   List<Menu> menuData;
-
+  Hotel hotelData;
   MenuList({
     this.menuData,
+    this.hotelData,
   });
 
   @override
@@ -24,8 +26,10 @@ class _MenuListState extends State<MenuList> {
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 itemCount: widget.menuData.length,
-                itemBuilder: (context, index) =>
-                    MenuCard(menu: widget.menuData[index])),
+                itemBuilder: (context, index) => MenuCard(
+                      menu: widget.menuData[index],
+                  hotel:widget.hotelData
+                    )),
           )
         : Center(
             child: Text(
