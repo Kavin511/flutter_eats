@@ -6,13 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_eats/Db/Model/HotelModal.dart';
 import 'package:flutter_eats/Db/Model/MenuModal.dart';
 import 'package:flutter_eats/LocalStorage/Cart.dart';
-
 class MenuCard extends StatefulWidget {
   Menu menu;
   Hotel hotel;
-
   MenuCard({this.menu, this.hotel});
-
   @override
   _MenuCardState createState() => _MenuCardState();
 }
@@ -20,7 +17,6 @@ class MenuCard extends StatefulWidget {
 class _MenuCardState extends State<MenuCard> {
   final CartStorage cartStorage = CartStorage();
   bool addedToCart = false;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -81,8 +77,8 @@ class _MenuCardState extends State<MenuCard> {
                       "foodDesc": widget.menu.foodDesc,
                       "category": widget.menu.category,
                       "availability": widget.menu.availability,
-                      "hotelNumber":widget.hotel.mobileNumber,
-                      "hotelName":widget.hotel.hotelName,
+                      "hotelNumber": widget.hotel.mobileNumber,
+                      "hotelName": widget.hotel.hotelName,
                     });
                     setState(() {
                       addedToCart = true;
@@ -106,7 +102,8 @@ class _MenuCardState extends State<MenuCard> {
   }
 
   void addToCart(String cart) {
-    List cartList = cartStorage.getCart() != null ? cartStorage.getCart() : [];
+    List<String> cartList =
+        cartStorage.getCart() != null ? cartStorage.getCart() : [];
     cartList.add(cart);
     cartStorage.addToCart(cartList);
     final snackBar =

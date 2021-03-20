@@ -3,7 +3,6 @@ class Hotel {
   String email;
   String address;
   String hotelName;
-
   Hotel({
     // this.mobileNumber
     this.mobileNumber,
@@ -11,7 +10,6 @@ class Hotel {
     this.address,
     this.hotelName,
   });
-
   Hotel.fromJson(Map<String, dynamic> json) {
     mobileNumber = json['mobileNumber'];
     email = json['email'];

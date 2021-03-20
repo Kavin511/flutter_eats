@@ -39,8 +39,11 @@ class _DashboardState extends State<Dashboard> {
         appBar: AppBar(
           title: actionBarText(),
           centerTitle: true,
+          backgroundColor: Colors.redAccent,
         ),
         bottomNavigationBar: BottomNavigationBar(
+          elevation: 100,
+          backgroundColor: Colors.redAccent.withOpacity(.1),
           onTap: (index) => {
             this._pageController.animateToPage(index,
                 duration: const Duration(milliseconds: 100),
@@ -49,11 +52,11 @@ class _DashboardState extends State<Dashboard> {
           currentIndex: _pageIndex,
           items: [
             BottomNavigationBarItem(
-                icon: Icon(Icons.restaurant), title: Text('Restaurants')),
+                icon: Icon(Icons.restaurant), label: 'Restaurants'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart), title: Text('Cart')),
+                icon: Icon(Icons.shopping_cart), label:'Cart'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.person), title: Text('Profile'))
+                icon: Icon(Icons.person), label:'Profile')
           ],
         ),
         body: PageView(
@@ -69,7 +72,7 @@ class _DashboardState extends State<Dashboard> {
     setState(() {
       this._pageIndex = value;
       this.text =
-          value == 0 ? "Restaurants" : (value == 1 ? "Cart" : "Profile");
+          value == 0 ? "Restaurant" : (value == 1 ? "Cart" : "Profile");
     });
   }
 }

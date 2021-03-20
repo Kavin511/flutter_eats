@@ -30,7 +30,7 @@ class _HotelDetailsState extends State<HotelDetails> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           new Container(
-            height: size.height * .5,
+            height: size.height * .4,
             color: Colors.white,
             child: Stack(
               children: [
@@ -53,56 +53,76 @@ class _HotelDetailsState extends State<HotelDetails> {
                     ],
                   ),
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(35),
-                        shape: BoxShape.rectangle,
-                        boxShadow: [
-                          BoxShadow(
-                              offset: const Offset(3.0, 3.0),
-                              spreadRadius: 8,
-                              blurRadius: 10,
-                              color: Colors.blue.withOpacity(.1))
-                        ]),
-                    width: size.width * .8,
-                    height: 75,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: new Icon(
-                            Icons.restaurant,
-                            color: Colors.orange,
-                            semanticLabel: "Ratings",
-                          ),
-                        ),
-                        SizedBox(
-                          height: 4,
-                          width: 1,
-                        ),
-                        RichText(
-                          text: TextSpan(
-                              style: TextStyle(color: Colors.black),
-                              children: [
-                                TextSpan(
-                                    text: widget.hotel.hotelName,
-                                    style: GoogleFonts.arvo(
-                                        textStyle: TextStyle(
-                                            fontFamily: 'Arvo',
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold)))
-                              ]),
-                        ),
-                      ],
-                    ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0, left: 10),
+                  child: IconButton(
+                    icon: new Icon(Icons.arrow_back_ios, color: Colors.white),
+                    onPressed: () => Navigator.of(context).pop(),
                   ),
                 ),
               ],
             ),
+          ),
+          Column(
+            // mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                          style: TextStyle(color: Colors.black),
+                          children: [
+                            TextSpan(
+                                text: widget.hotel.hotelName,
+                                style: GoogleFonts.metrophobic(
+                                    textStyle: TextStyle(
+                                      fontSize: 30,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    )))
+                          ]),
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Text('Food available now',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          )),
+                      Icon(Icons.check_circle, color: Colors.green.withOpacity(1))
+                    ])
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: RichText(
+                  text:
+                      TextSpan(style: TextStyle(color: Colors.black), children: [
+                    TextSpan(
+                        text: widget.hotel.address,
+                        style: GoogleFonts.averiaSerifLibre(
+                            textStyle:
+                                TextStyle(fontSize: 16, color: Colors.black54)))
+                  ]),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: RichText(
+                  text:
+                      TextSpan(style: TextStyle(color: Colors.black), children: [
+                    TextSpan(
+                        text: widget.hotel.mobileNumber,
+                        style: GoogleFonts.averiaSerifLibre(
+                            textStyle:
+                                TextStyle(fontSize: 16, color: Colors.black54)))
+                  ]),
+                ),
+              ),
+            ],
           ),
           new Row(
             // mainAxisAlignment: MainAxisAlignment.center,
@@ -291,7 +311,8 @@ class _HotelDetailsState extends State<HotelDetails> {
                         print('error do');
                         return new Container(
                           child: Center(
-                              child: Text('No menu items,try after some time')),
+                              child: Text(
+                                  'No menu items availabel ,try after some time')),
                         );
                         break;
                     }

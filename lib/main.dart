@@ -31,10 +31,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return GetMaterialApp(
       defaultTransition: Transition.fadeIn,
       theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.red,
           textTheme: GoogleFonts.robotoTextTheme(
             Theme.of(context).textTheme,
           )),
