@@ -6,7 +6,7 @@ class Menu {
   String foodType;
   String availability;
   String foodItems;
-
+  String id;
   Menu({
     // this.mobileNumber
     this.foodName,
@@ -15,9 +15,11 @@ class Menu {
     this.price,
     this.foodType,
     this.availability,
+    this.id,
   });
 
   Menu.fromJson(Map<String, dynamic> json) {
+    id:json["_id"];
     foodName = json['foodName'];
     foodDesc = json['foodDesc'];
     category = json['category'];
