@@ -8,7 +8,6 @@ class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
-
 class _HomeState extends State<Home> {
   HotelBloc hotelBloc;
   @override
@@ -19,9 +18,11 @@ class _HomeState extends State<Home> {
           switch (snapshot.data.status) {
             case Status.LOADING:
               print('loading');
-              return new Container(
-                child: Center(
-                  child: CircularProgressIndicator(),
+              return Center(
+                child: new Container(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
               );
               break;

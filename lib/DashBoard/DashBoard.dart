@@ -60,6 +60,7 @@ class _DashboardState extends State<Dashboard> {
           ],
         ),
         body: PageView(
+
           children: tabList,
           controller: _pageController,
           onPageChanged: onPageChange,

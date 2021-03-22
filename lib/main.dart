@@ -35,11 +35,14 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       defaultTransition: Transition.fadeIn,
       theme: ThemeData(
+          brightness: Brightness.light,
+          primaryColorBrightness: Brightness.light,
           primarySwatch: Colors.red,
           textTheme: GoogleFonts.robotoTextTheme(
             Theme.of(context).textTheme,
           )),
       home: token == null ? LoginPage() : Dashboard(),
+      debugShowCheckedModeBanner: false,
       getPages: route,
       initialRoute: token == null ? '/' : "/dashboard",
     );

@@ -37,7 +37,6 @@ class _HotelCardState extends State<HotelCard> {
                   ),
                   child: Stack(
                     children: [
-
                       ClipRRect(  borderRadius: BorderRadius.circular(8.0),child: Image.asset('images/hotels.jpg',fit: BoxFit.fitHeight,height: size.height*.5,)),
                       Padding(
                         padding: const EdgeInsets.all(15.0),
