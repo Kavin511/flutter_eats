@@ -5,6 +5,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_eats/DashBoard/Hotel/Menu/CartNotifier.dart';
 import 'package:flutter_eats/DashBoard/Hotel/Menu/Menucard.dart';
 import 'package:flutter_eats/DashBoard/Hotel/Menu/menuList.dart';
 import 'package:flutter_eats/Db/Model/FoodModal.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_eats/Db/Model/HotelModal.dart';
 import 'package:flutter_eats/Db/Networking/MenuNetworking/MenuResponse.dart';
 import 'package:flutter_eats/Db/bloc/MenuBloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class HotelDetails extends StatefulWidget {
   Hotel hotel;
@@ -42,12 +44,15 @@ class _HotelDetailsState extends State<HotelDetails> {
               color: Colors.redAccent.withOpacity(.99),
             ),
             width: size.width * .95,
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text(
-                  'Proceed to Buy',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+            child: Provider(
+              create: (_)=>CartNotifier(),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text(
+                    'Proceed to Buy',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
                 ),
               ),
             ),
@@ -221,7 +226,7 @@ class _HotelDetailsState extends State<HotelDetails> {
                             children: [
                               Icon(
                                 Icons.no_food,
-                                size: 50,
+                                size: 40,
                               ),
                               Text(
                                   'No menu items available ,try after some time'),

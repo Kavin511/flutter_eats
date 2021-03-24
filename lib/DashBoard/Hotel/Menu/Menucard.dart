@@ -16,9 +16,7 @@ class MenuCard extends StatefulWidget {
   Menu menu;
   Hotel hotel;
   List<String> food;
-
   MenuCard({this.menu, this.hotel});
-
   @override
   _MenuCardState createState() => _MenuCardState();
 }
@@ -35,7 +33,7 @@ class _MenuCardState extends State<MenuCard> {
           padding: const EdgeInsets.only(left: 8, top: 8, bottom: 8, right: 8),
           child: GlassmorphicContainer(
             blur: 100,
-            borderRadius: 10,
+            borderRadius: 15,
             height: 250,
             borderGradient: LinearGradient(colors: [
               Colors.black26,
@@ -57,7 +55,7 @@ class _MenuCardState extends State<MenuCard> {
             //         blurRadius: 10,
             //       ),
             //     ]),
-            border: 2,
+            border: 1,
             width: 180,
             child: SingleChildScrollView(
               child: Column(
@@ -100,9 +98,10 @@ class _MenuCardState extends State<MenuCard> {
                         borderRadius: BorderRadius.circular(7),
                       ),
                       onPressed: () {
-                        print(widget.menu.id);
+                        print(widget.menu.id_);
                         if (!addedToCart) {
                           final cart = json.encode({
+                            "_id": widget.menu.id_,
                             "foodName": widget.menu.foodName,
                             "foodType": widget.menu.foodType,
                             "foodPrice": widget.menu.price,
@@ -121,12 +120,12 @@ class _MenuCardState extends State<MenuCard> {
                       child: !addedToCart
                           ? Center(
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [Text('Add'), Icon(Icons.add)],
                             ))
                           : Center(
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [Text('Remove'), Icon(Icons.delete)],
                             )),
                       color: !addedToCart
