@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:animations/animations.dart';
@@ -8,27 +9,30 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_eats/DashBoard/Hotel/Menu/CartNotifier.dart';
 import 'package:flutter_eats/DashBoard/Hotel/Menu/Menucard.dart';
 import 'package:flutter_eats/DashBoard/Hotel/Menu/menuList.dart';
+import 'package:flutter_eats/DashBoard/Orders.dart';
+import 'package:flutter_eats/Db/Model/CartModal.dart';
 import 'package:flutter_eats/Db/Model/FoodModal.dart';
 import 'package:flutter_eats/Db/Model/HotelModal.dart';
+import 'package:flutter_eats/Db/Model/MenuModal.dart';
 import 'package:flutter_eats/Db/Networking/MenuNetworking/MenuResponse.dart';
 import 'package:flutter_eats/Db/bloc/MenuBloc.dart';
+import 'package:glassmorphism/glassmorphism.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class HotelDetails extends StatefulWidget {
   Hotel hotel;
-
   HotelDetails({this.hotel});
-
   @override
   _HotelDetailsState createState() => _HotelDetailsState();
 }
 
 class _HotelDetailsState extends State<HotelDetails> {
-  List<Food> food = [];
-
+  List<CartModel> cart;
   MenuBloc menuBloc;
-
+  addedToCart(Menu menu){
+   // if(cart.)
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -45,7 +49,7 @@ class _HotelDetailsState extends State<HotelDetails> {
             ),
             width: size.width * .95,
             child: Provider(
-              create: (_)=>CartNotifier(),
+              create: (_) => CartNotifier(),
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -169,6 +173,123 @@ class _HotelDetailsState extends State<HotelDetails> {
             ),
           ),
         );
+    Widget menuCard(Menu menu) =>  new InkWell(
+      onTap: (){print("tapped");},
+      child: new Container(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8, top: 8, bottom: 8, right: 8),
+          child: GlassmorphicContainer(
+            blur: 100,
+            borderRadius: 15,
+            height: 250,
+            borderGradient: LinearGradient(colors: [
+              Colors.black26,
+              Colors.black26,
+              Colors.black26,
+              Colors.black26,
+            ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+            linearGradient: LinearGradient(colors: [
+              Colors.white70,
+              Colors.white24,
+            ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+            // decoration: BoxDecoration(
+            //     color: Colors.white70.withOpacity(.5),
+            //     shape: BoxShape.rectangle,
+            //     boxShadow: [
+            //       BoxShadow(
+            //         color: Colors.lightBlueAccent.withOpacity(.1),
+            //         spreadRadius: 1,
+            //         blurRadius: 10,
+            //       ),
+            //     ]),
+            border: 1,
+            width: 180,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5.0),
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage('images/food.jpg'),
+                      radius: 50,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Text(menu.foodName),
+                      ),
+                      Icon(Icons.restaurant)
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(menu.price),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(Icons.attach_money_rounded),
+                      )
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0, right: 8),
+                    child: MaterialButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      onPressed: () {
+                        print(menu.id_);
+                        addedToCart(menu);
+                        // if (!addedToCart) {
+                        //   final cart = json.encode({
+                        //     "_id": menu.id_,
+                        //     "foodName": menu.foodName,
+                        //     "foodType": menu.foodType,
+                        //     "foodPrice": menu.price,
+                        //     "foodDesc": menu.foodDesc,
+                        //     "category": menu.category,
+                        //     "availability": menu.availability,
+                        //     "hotelNumber": widget.hotel.mobileNumber,
+                        //     "hotelName":widget.hotel.hotelName,
+                        //   });
+                        //   setState(() {
+                        //     // addedToCart = true;
+                        //   });
+                        //   // addToCart(cart);
+                        // }
+                      },
+                      child: !true
+                          ? Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [Text('Add'), Icon(Icons.add)],
+                          ))
+                          : Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [Text('Remove'), Icon(Icons.delete)],
+                          )),
+                      color: !true
+                          ? Colors.redAccent.withOpacity(.9)
+                          : Colors.redAccent.withOpacity(.5),
+                      textColor: Colors.white,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
     Widget menuList() => Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
@@ -200,20 +321,18 @@ class _HotelDetailsState extends State<HotelDetails> {
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
                                     itemCount: snapshot.data.data.length,
-                                    itemBuilder: (context, index) => MenuCard(
-                                          menu: snapshot.data.data[index],
-                                          hotel: widget.hotel,
-                                        )),
+                                    itemBuilder: (context, index) =>
+                                        menuCard(snapshot.data.data[index])),
                               )
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
                                     Icons.no_food,
-                                    size: 50,
+                                    size: 20,
                                   ),
                                   Text(
-                                    'No menu items found',
+                                    'Menu not found',
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 ],
@@ -241,7 +360,7 @@ class _HotelDetailsState extends State<HotelDetails> {
           ),
         );
     return Scaffold(
-      backgroundColor: const Color(0xffFFFFFAFA),
+        backgroundColor: const Color(0xffFFFFFAFA),
         appBar: appbar,
         body: Stack(
           children: [

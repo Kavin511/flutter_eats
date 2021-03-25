@@ -16,7 +16,9 @@ class MenuCard extends StatefulWidget {
   Menu menu;
   Hotel hotel;
   List<String> food;
+
   MenuCard({this.menu, this.hotel});
+
   @override
   _MenuCardState createState() => _MenuCardState();
 }
