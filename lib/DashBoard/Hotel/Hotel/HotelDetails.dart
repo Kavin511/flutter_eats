@@ -6,6 +6,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_eats/DashBoard/Hotel/Menu/CartNotifier.dart';
 import 'package:flutter_eats/DashBoard/Hotel/Menu/Menucard.dart';
 import 'package:flutter_eats/DashBoard/Hotel/Menu/menuList.dart';
@@ -22,17 +23,39 @@ import 'package:provider/provider.dart';
 
 class HotelDetails extends StatefulWidget {
   Hotel hotel;
+
   HotelDetails({this.hotel});
+
   @override
   _HotelDetailsState createState() => _HotelDetailsState();
 }
 
 class _HotelDetailsState extends State<HotelDetails> {
-  List<CartModel> cart;
+  List<CartModel> cart = [];
   MenuBloc menuBloc;
-  addedToCart(Menu menu){
-   // if(cart.)
+
+  @override
+  void initState() {
+    menuBloc = MenuBloc();
+    menuBloc.fetchMenu(widget.hotel.mobileNumber);
   }
+
+  addedToCart(Menu menu) {
+    setState(() {
+      CartModel cartModel =
+          new CartModel(hotel: widget.hotel, menu: menu, count: 1);
+      cart.add(cartModel);
+    });
+  }
+
+  int checkInCart(String id) {
+    if (cart == null) return 0;
+    for (CartModel i in cart) {
+      if (i.menu.id_ == id) return i.count;
+    }
+    return 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -84,7 +107,7 @@ class _HotelDetailsState extends State<HotelDetails> {
             elevation: 4,
             child: Container(
               height: size.height * .4,
-              width: size.width * .95,
+              width: size.width,
               color: Colors.white,
               child: Container(
                 padding: const EdgeInsets.symmetric(
@@ -173,123 +196,167 @@ class _HotelDetailsState extends State<HotelDetails> {
             ),
           ),
         );
-    Widget menuCard(Menu menu) =>  new InkWell(
-      onTap: (){print("tapped");},
-      child: new Container(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8, top: 8, bottom: 8, right: 8),
-          child: GlassmorphicContainer(
-            blur: 100,
-            borderRadius: 15,
-            height: 250,
-            borderGradient: LinearGradient(colors: [
-              Colors.black26,
-              Colors.black26,
-              Colors.black26,
-              Colors.black26,
-            ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-            linearGradient: LinearGradient(colors: [
-              Colors.white70,
-              Colors.white24,
-            ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-            // decoration: BoxDecoration(
-            //     color: Colors.white70.withOpacity(.5),
-            //     shape: BoxShape.rectangle,
-            //     boxShadow: [
-            //       BoxShadow(
-            //         color: Colors.lightBlueAccent.withOpacity(.1),
-            //         spreadRadius: 1,
-            //         blurRadius: 10,
-            //       ),
-            //     ]),
-            border: 1,
-            width: 180,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage('images/food.jpg'),
-                      radius: 50,
+    Widget menuCard(Menu menu) => new InkWell(
+          onTap: () {
+            print("tapped");
+          },
+          child: new Container(
+            child: Padding(
+              padding:
+                  const EdgeInsets.only(left: 8, top: 8, bottom: 8, right: 8),
+              child: GlassmorphicContainer(
+                blur: 100,
+                borderRadius: 15,
+                height: 250,
+                borderGradient: LinearGradient(colors: [
+                  Colors.black26,
+                  Colors.black26,
+                  Colors.black26,
+                  Colors.black26,
+                ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                linearGradient: LinearGradient(colors: [
+                  Colors.white70,
+                  Colors.white24,
+                ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                border: 1,
+                width: 180,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex:4,
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: CircleAvatar(
+                            backgroundImage: AssetImage('images/food.jpg'),
+                            radius: 50,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Text(menu.foodName),
+                    Expanded(
+                      flex: 3,
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8.0,left: 8),
+                                  child: Text(menu.foodName),
+                                ),
+                                Icon(Icons.restaurant)
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left:8.0,right: 8),
+                                  child: Text(menu.price),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left:8.0,right: 8),
+                                  child: Icon(Icons.attach_money_rounded),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                      Icon(Icons.restaurant)
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(menu.price),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(Icons.attach_money_rounded),
-                      )
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 8),
-                    child: MaterialButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                      onPressed: () {
-                        print(menu.id_);
-                        addedToCart(menu);
-                        // if (!addedToCart) {
-                        //   final cart = json.encode({
-                        //     "_id": menu.id_,
-                        //     "foodName": menu.foodName,
-                        //     "foodType": menu.foodType,
-                        //     "foodPrice": menu.price,
-                        //     "foodDesc": menu.foodDesc,
-                        //     "category": menu.category,
-                        //     "availability": menu.availability,
-                        //     "hotelNumber": widget.hotel.mobileNumber,
-                        //     "hotelName":widget.hotel.hotelName,
-                        //   });
-                        //   setState(() {
-                        //     // addedToCart = true;
-                        //   });
-                        //   // addToCart(cart);
-                        // }
-                      },
-                      child: !true
-                          ? Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [Text('Add'), Icon(Icons.add)],
-                          ))
-                          : Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [Text('Remove'), Icon(Icons.delete)],
-                          )),
-                      color: !true
-                          ? Colors.redAccent.withOpacity(.9)
-                          : Colors.redAccent.withOpacity(.5),
-                      textColor: Colors.white,
                     ),
-                  )
-                ],
+                    Expanded(
+                      flex: 2,
+                      child: Center(
+                        child: MaterialButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          onPressed: () {
+                            addedToCart(menu);
+                            // if (!addedToCart) {
+                            //   final cart = json.encode({
+                            //     "_id": menu.id_,
+                            //     "foodName": menu.foodName,
+                            //     "foodType": menu.foodType,
+                            //     "foodPrice": menu.price,
+                            //     "foodDesc": menu.foodDesc,
+                            //     "category": menu.category,
+                            //     "availability": menu.availability,
+                            //     "hotelNumber": widget.hotel.mobileNumber,
+                            //     "hotelName":widget.hotel.hotelName,
+                            //   });
+                            //   setState(() {
+                            //     // addedToCart = true;
+                            //   });
+                            //   // addToCart(cart);
+                            // }
+                          },
+                          child: checkInCart(menu.id_) <= 0
+                              ? Center(
+                                  child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('Add'),
+                                    IconButton(
+                                      icon: Icon(Icons.add),
+                                      onPressed: () => {
+                                      addedToCart(menu)
+                                      },
+                                    )
+                                  ],
+                                ))
+                              : Center(
+                                  child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.remove),
+                                      onPressed: () {
+                                        for (CartModel i in cart) {
+                                          if (i.menu.id_ == menu.id_) {
+                                            setState(() {
+                                              i.count--;
+                                              if (i.count <= 0) {
+                                                cart.remove(i);
+                                              }
+                                            });
+                                          }
+                                        }
+                                      },
+                                    ),
+                                    Text('${checkInCart(menu.id_)}'),
+                                    IconButton(
+                                      icon: Icon(Icons.add),
+                                      onPressed: () {
+                                        for (CartModel i in cart) {
+                                          if (i.menu.id_ == menu.id_) {
+                                            setState(() {
+                                              i.count++;
+                                            });
+                                          }
+                                        }
+                                      },
+                                    )
+                                  ],
+                                )),
+                          color: checkInCart(menu.id_) <= 0
+                              ? Colors.redAccent.withOpacity(.9)
+                              : Colors.orangeAccent.withOpacity(.9),
+                          textColor: Colors.white,
+                        ),
+                      ),
+                    )
+
+
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
-    );
-
+        );
     Widget menuList() => Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
@@ -324,19 +391,21 @@ class _HotelDetailsState extends State<HotelDetails> {
                                     itemBuilder: (context, index) =>
                                         menuCard(snapshot.data.data[index])),
                               )
-                            : Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.no_food,
-                                    size: 20,
-                                  ),
-                                  Text(
-                                    'Menu not found',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                ],
-                              );
+                            : Center(
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.no_food,
+                                      size: 20,
+                                    ),
+                                    Text(
+                                      'Menu not found',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ],
+                                ),
+                            );
                         break;
                       case Status.ERROR:
                         return new Container(
@@ -345,10 +414,9 @@ class _HotelDetailsState extends State<HotelDetails> {
                             children: [
                               Icon(
                                 Icons.no_food,
-                                size: 40,
+                                size: 20,
                               ),
-                              Text(
-                                  'No menu items available ,try after some time'),
+                              Text('Menu not found'),
                             ],
                           )),
                         );
@@ -366,12 +434,12 @@ class _HotelDetailsState extends State<HotelDetails> {
           children: [
             SingleChildScrollView(
               child: Container(
-                margin: EdgeInsets.only(bottom: size.height * .1, top: .1),
-                child: Column(
+                margin: EdgeInsets.only(bottom: size.height * .1,),
+                child: Stack(
                   children: [
                     hotelImage(),
-                    hotelInfo(),
-                    menuList(),
+                    Align(child: hotelInfo(),alignment: Alignment.bottomLeft,),
+                    Align(child: menuList(),alignment: Alignment.bottomCenter,),
                   ],
                 ),
               ),
@@ -379,11 +447,5 @@ class _HotelDetailsState extends State<HotelDetails> {
             cartView(),
           ],
         ));
-  }
-
-  @override
-  void initState() {
-    menuBloc = MenuBloc();
-    menuBloc.fetchMenu(widget.hotel.mobileNumber);
   }
 }

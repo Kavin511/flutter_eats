@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_eats/DashBoard/Hotel/Hotel/Home.dart';
 import 'package:flutter_eats/DashBoard/Orders.dart';
 import 'package:flutter_eats/DashBoard/Profile.dart';
+import 'package:flutter_eats/Db/Constants.dart';
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
@@ -13,7 +14,6 @@ class _DashboardState extends State<Dashboard> {
   String text = "Restaurants";
   List<Widget> tabList = [Home(), Order(), Profile()];
   PageController _pageController;
-
   @override
   void initState() {
     super.initState();
@@ -21,7 +21,6 @@ class _DashboardState extends State<Dashboard> {
   }
 
   void onTabTapped(int index) {}
-
   @override
   void dispose() {
     super.dispose();
@@ -31,16 +30,11 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     Widget actionBarText() {
-      return new Text(text);
+      return new Text(text,style: TextStyle(color: kTextColor),);
     }
-
     setState(() {});
     return Scaffold(
-        appBar: AppBar(
-          title: actionBarText(),
-          centerTitle: true,
-          backgroundColor: Colors.redAccent,
-        ),
+        appBar: buildAppBar(actionBarText),
         bottomNavigationBar: BottomNavigationBar(
           elevation: 100,
           backgroundColor: Colors.redAccent.withOpacity(.1),
@@ -65,6 +59,21 @@ class _DashboardState extends State<Dashboard> {
           controller: _pageController,
           onPageChanged: onPageChange,
         ));
+  }
+
+  AppBar buildAppBar(Widget actionBarText()) {
+    return AppBar(
+        title: actionBarText(),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        backwardsCompatibility: true,
+        leading: IconButton(icon: Icon(CupertinoIcons.person_crop_circle,size: 30,color: kTextColor,), onPressed: ()=>{}),
+        actions: [
+          IconButton(icon: Icon(CupertinoIcons.shopping_cart,color: kTextColor,), onPressed: ()=>{}),
+          SizedBox(width: kDefaultPadding/2,)
+        ],
+      );
   }
 
   onTabChanged(int index) {}

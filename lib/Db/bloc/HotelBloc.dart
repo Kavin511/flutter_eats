@@ -18,10 +18,17 @@ class HotelBloc {
     _HotelRepository = HotelRepository();
     fetchHotel();
   }
-
+  refreshHotel() async{
+    HotelListSink.add(HotelApiResponse.refreshing('Getting Hotel available'));
+    try {
+      List<Hotel> HotelList = await _HotelRepository.getHotel();
+      HotelListSink.add(HotelApiResponse.completed(HotelList));
+    } catch (e) {
+      HotelListSink.add(HotelApiResponse.error('Error occurred'));
+      print(e);
+    }
+  }
   fetchHotel() async {
-    // jwtDecoder jwt = jwtDecoder();
-    // var mobileNumber = await jwt.decode();
     HotelListSink.add(HotelApiResponse.loading('Getting Hotel available'));
     try {
       List<Hotel> HotelList = await _HotelRepository.getHotel();
@@ -31,7 +38,6 @@ class HotelBloc {
       print(e);
     }
   }
-
   dispose() {
     _controller?.close();
   }

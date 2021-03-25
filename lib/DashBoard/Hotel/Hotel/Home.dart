@@ -13,7 +13,8 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(child: StreamBuilder(stream: hotelBloc.HotelListStream,builder: (context,snapshot){
+      body: RefreshIndicator(onRefresh:()=>hotelBloc.refreshHotel(),
+      child: StreamBuilder(stream: hotelBloc.HotelListStream,builder: (context,snapshot){
         if (snapshot.hasData) {
           switch (snapshot.data.status) {
             case Status.LOADING:
@@ -36,13 +37,19 @@ class _HomeState extends State<Home> {
                 child: Center(
                     child: Text('No menu items found Add new Items...')),
               );
+            case Status.REFRESHING:
+              return new Container(
+                child: Center(
+                  child: Text("Reloading hotels..."),
+                ),
+              );
               break;
           }
         }
         return Container();
-      }), onRefresh: (){
-        return hotelBloc.fetchHotel();
       }),
+      triggerMode: RefreshIndicatorTriggerMode.onEdge,
+      displacement: MediaQuery.of(context).size.height*.3,),
     );
   }
   @override

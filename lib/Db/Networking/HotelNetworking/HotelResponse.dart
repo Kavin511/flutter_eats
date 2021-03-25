@@ -8,9 +8,8 @@ class HotelApiResponse<T> {
   HotelApiResponse.completed(this.data) : status = Status.COMPLETED;
 
   HotelApiResponse.error(this.message) : status = Status.ERROR;
+
+  HotelApiResponse.refreshing(this.message) : status = Status.REFRESHING;
 }
-enum Status {
-  LOADING,
-  COMPLETED,
-  ERROR
-}
+
+enum Status { LOADING, COMPLETED, ERROR, REFRESHING }
