@@ -10,6 +10,7 @@ class Order extends StatefulWidget {
   @override
   _OrderState createState() => _OrderState();
 }
+
 class _OrderState extends State<Order> {
   final CartStorage cartStorage = new CartStorage();
   bool emptyCart = false;
@@ -134,6 +135,7 @@ class _OrderState extends State<Order> {
                 },
               ));
   }
+
   deleteFoodFromCart(cartFood) {
     List cartList = cartStorage.getCart() != null ? cartStorage.getCart() : [];
     List finalList = [];
@@ -147,14 +149,15 @@ class _OrderState extends State<Order> {
     }
     cartStorage.addToCart(finalList);
     final snackBar =
-    SnackBar(content: Text('Food removed from cart successfully!'));
+        SnackBar(content: Text('Food removed from cart successfully!'));
     Scaffold.of(context).showSnackBar(snackBar);
   }
+
   void orderFoodFromCart() {
-    OrderService().placeOrder("","");
+    OrderService().placeOrder("", "");
     CoolAlert.show(
       context: context,
-      animType:CoolAlertAnimType.slideInUp,
+      animType: CoolAlertAnimType.slideInUp,
       type: CoolAlertType.success,
       text: "Your order placed successfully!",
     );

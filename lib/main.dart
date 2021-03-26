@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eats/Authentication/Login.dart';
 import 'package:flutter_eats/Authentication/SignUp.dart';
+import 'package:flutter_eats/DashBoard/Orders/PlaceOrder.dart';
 import 'package:flutter_eats/Db/Constants.dart';
+import 'DashBoard/Orders/Orders.dart';
+import 'DashBoard/Profile.dart';
 import 'file:///D:/C%20files/AndroidStudioProjects/flutter_eats/lib/DashBoard/Hotel/Hotel/HotelDetails.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'DashBoard/DashBoard.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -22,18 +26,20 @@ class MyApp extends StatelessWidget {
     GetPage(name: '/', page: () => LoginPage()),
     GetPage(name: '/signUp', page: () => SignUp()),
     GetPage(name: '/dashboard', page: () => Dashboard()),
+    GetPage(name: '/orders', page: () => Order()),
+    GetPage(name: '/profile', page: () => Profile()),
     GetPage(name: '/hotelDetails', page: () => HotelDetails()),
+    GetPage(name: '/placeOrder', page:()=> PlaceOrder())
   ];
   final token;
   MyApp({this.token});
 
   @override
   Widget build(BuildContext context) {
-
     return GetMaterialApp(
       defaultTransition: Transition.fadeIn,
       theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
           primaryColorBrightness: Brightness.light,
           primarySwatch: Colors.red,
           textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor)),
@@ -44,6 +50,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-

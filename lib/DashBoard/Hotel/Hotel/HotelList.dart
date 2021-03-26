@@ -27,7 +27,7 @@ class _HotelListState extends State<HotelList> {
               itemCount: widget.hotelList.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   // mainAxisSpacing: 0,
-                    crossAxisCount: 1, childAspectRatio: 1.2,crossAxisSpacing: 0),
+                    crossAxisCount: 1, childAspectRatio: 1,crossAxisSpacing: 0),
                 itemBuilder: (context, index) =>
                     HotelCard(hotel: widget.hotelList[index])),
           )

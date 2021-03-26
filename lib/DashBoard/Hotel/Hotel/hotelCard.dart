@@ -26,10 +26,10 @@ class HotelCard extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
-            color: const Color(0xf5f5f5),
+            color: const Color(0xfff0f0f0),
             border: Border.all(width: 1, color: Color(0xffcecece)),
             borderRadius: BorderRadius.circular(16)),
-        padding: EdgeInsets.only(top: kDefaultPadding / 2),
+        // padding: EdgeInsets.only(top: kDefaultPadding / 2),
         child: GestureDetector(
           onTap: () => Get.to(HotelDetails(
             hotel: hotel,
@@ -40,12 +40,16 @@ class HotelCard extends StatelessWidget {
               Container(
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(16)),
-                child: ClipRRect(
-                  child: Image.asset(
-                    'images/hotels.jpg',
-                    fit: BoxFit.fitWidth,
+                child: Hero(
+                  tag: '${hotel.mobileNumber}',
+                  child: ClipRRect(
+                    child: Image.asset(
+                      'images/hotels.jpg',
+                      width: size.width,
+                      fit: BoxFit.fitWidth,
+                    ),
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  borderRadius: BorderRadius.circular(15),
                 ),
               ),
               Padding(
@@ -56,13 +60,13 @@ class HotelCard extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left:8.0,right: 8),
-                      child: Icon(CupertinoIcons.building_2_fill),
+                      child: Icon(CupertinoIcons.building_2_fill,color: kTextLightColor,),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left:8.0,right: 8),
                       child: Text(
                         hotel.hotelName,
-                        style: TextStyle(color: kTextColor),
+                        style: TextStyle(color: kTextLightColor, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
@@ -76,14 +80,14 @@ class HotelCard extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Icon(CupertinoIcons.location_solid),
+                      child: Icon(CupertinoIcons.location_solid,color: kTextLightColor,),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         hotel.address,
                         style:
-                            TextStyle(color: kTextColor, fontWeight: FontWeight.bold),
+                            TextStyle(color: kTextLightColor),
                       ),
                     ),
                   ],
