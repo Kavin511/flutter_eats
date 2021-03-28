@@ -16,18 +16,16 @@ class HotelCard extends StatelessWidget {
   Hotel hotel;
 
   HotelCard({this.hotel});
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return InkWell(
-      splashColor: kMainColor,
       onTap: () {},
       child: Container(
-        margin: EdgeInsets.only(bottom: 10),
+        margin: EdgeInsets.all(5),
         decoration: BoxDecoration(
-            color: const Color(0xfff0f0f0),
-            border: Border.all(width: 1, color: Color(0xffcecece)),
+            color: const Color(0xfff),
+            border: Border.all(width: 1, color: Color(0xffa7a7a7)),
             borderRadius: BorderRadius.circular(16)),
         // padding: EdgeInsets.only(top: kDefaultPadding / 2),
         child: GestureDetector(

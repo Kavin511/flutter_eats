@@ -14,7 +14,6 @@ import 'DashBoard/DashBoard.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var token = prefs.getString('token');
   print(token);
@@ -33,14 +32,14 @@ class MyApp extends StatelessWidget {
   ];
   final token;
   MyApp({this.token});
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       defaultTransition: Transition.fadeIn,
+      darkTheme: ThemeData.dark(),
       theme: ThemeData(
           visualDensity: VisualDensity.adaptivePlatformDensity,
-          primaryColorBrightness: Brightness.light,
+          primaryColorBrightness: Brightness.dark,
           primarySwatch: Colors.red,
           textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor)),
       home: token == null ? LoginPage() : Dashboard(),

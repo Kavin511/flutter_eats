@@ -17,12 +17,9 @@ class Hotel {
     hotelName = json['hotelName'];
   }
 }
-
 class HotelResponse {
   List<Hotel> hotel;
-
   HotelResponse({this.hotel});
-
   HotelResponse.fromJson(Map<String, dynamic> json) {
     print(json['result']);
     if (json['result'] != null) {

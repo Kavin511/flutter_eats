@@ -13,8 +13,7 @@ class MenuBloc {
 
   Stream<MenuApiResponse<List<Menu>>> get menuListStream => _controller.stream;
 
-  MenuBloc() {
-    _controller = StreamController<MenuApiResponse<List<Menu>>>();
+  MenuBloc() {    _controller = StreamController<MenuApiResponse<List<Menu>>>();
     _menuRepository = MenuRepository();
     fetchMenu("");
   }

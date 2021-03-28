@@ -73,6 +73,8 @@ flutter:
    - images/heart.png
    - images/heart_fill.png
    - images/address.png
+   - images/orders.png
+   - images/bag.png
 
   #   - images/a_dot_ham.jpeg
 

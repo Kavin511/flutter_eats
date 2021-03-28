@@ -1,11 +1,16 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_eats/DashBoard/Orders/Orders.dart';
+import 'package:flutter_eats/DashBoard/Profile.dart';
 import 'package:flutter_eats/Db/Constants.dart';
 import 'package:flutter_eats/Db/Model/AddressModal.dart';
+import 'package:flutter_eats/Db/Model/CartArgument.dart';
 import 'package:flutter_eats/Db/Model/CartModal.dart';
+import 'package:flutter_eats/Db/Services/OrderServices.dart';
 import 'package:flutter_eats/LocalStorage/AddressStorage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -22,7 +27,7 @@ class PlaceOrder extends StatefulWidget {
 
 class _PlaceOrderState extends State<PlaceOrder> {
   final AddressStorage addressStorage = new AddressStorage();
-  List<CartModel> cart = Get.arguments;
+  CartArgument cartArgument = Get.arguments;
   bool emptyAddress = false;
   int selectedAddress = 0;
   TextEditingController address = TextEditingController();
@@ -261,9 +266,9 @@ class _PlaceOrderState extends State<PlaceOrder> {
 
   SizedBox cartSizedBox() {
     return SizedBox(
-      height: cart.length * 120.0,
+      height: cartArgument.cart.length * 120.0,
       child: ListView.builder(
-          itemCount: cart.length,
+          itemCount: cartArgument.cart.length,
           itemBuilder: (BuildContext context, int index) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
@@ -290,7 +295,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
                               ),
                             ),
                             Text(
-                              cart[index].menu.foodName,
+                              cartArgument.cart[index].menu.foodName,
                               style: TextStyle(
                                 fontSize: 18,
                                 color: kTextColor,
@@ -302,14 +307,14 @@ class _PlaceOrderState extends State<PlaceOrder> {
                       Expanded(
                           flex: 1,
                           child: Text(
-                            cart[index].count.toString(),
+                            cartArgument.cart[index].count.toString(),
                             style:
                                 TextStyle(fontSize: 18, color: kTextLightColor),
                           )),
                       Expanded(
                         flex: 1,
                         child: Text(
-                          '\$${cart[index].count * int.parse(cart[index].menu.price)}',
+                          '\$${cartArgument.cart[index].count * int.parse(cartArgument.cart[index].menu.price)}',
                           style:
                               TextStyle(fontSize: 18, color: kTextLightColor),
                         ),
@@ -354,18 +359,16 @@ class _PlaceOrderState extends State<PlaceOrder> {
 
   SizedBox placeOrderButton() {
     SharedPreferences prefs;
+    Response response;
     return SizedBox(
       height: 55,
       child: GestureDetector(
         onTap: () async => {
           prefs = await SharedPreferences.getInstance(),
           print(prefs.getString('token')),
-          Get.snackbar('Order', "Order placed successfully!",
-              snackPosition: SnackPosition.BOTTOM,
-              overlayColor: kMainColor.withOpacity(.01),
-              overlayBlur: .1,
-              barBlur: .1,
-              backgroundColor: kMainColor),
+          OrderService().placeOrder(cartArgument).then((val) => {
+                Get.off(Profile()),
+              })
         },
         child: SizedBox(
           width: size.width,
@@ -399,13 +402,17 @@ class _PlaceOrderState extends State<PlaceOrder> {
       ),
     );
   }
-
   AppBar buildAppBar() {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
-      leading: BackButton(),
-      title: Text('Place Order'),
+      leading: BackButton(
+        color: kTextColor,
+      ),
+      title: Text(
+        'Place Order',
+        style: TextStyle(color: kTextColor, fontWeight: FontWeight.bold),
+      ),
       centerTitle: true,
     );
   }

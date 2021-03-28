@@ -14,6 +14,7 @@ import 'package:flutter_eats/DashBoard/Hotel/Menu/Menucard.dart';
 import 'package:flutter_eats/DashBoard/Hotel/Menu/menuList.dart';
 import 'file:///D:/C%20files/AndroidStudioProjects/flutter_eats/lib/DashBoard/Orders/Orders.dart';
 import 'package:flutter_eats/Db/Constants.dart';
+import 'package:flutter_eats/Db/Model/CartArgument.dart';
 import 'package:flutter_eats/Db/Model/CartModal.dart';
 import 'package:flutter_eats/Db/Model/FoodModal.dart';
 import 'package:flutter_eats/Db/Model/HotelModal.dart';
@@ -51,11 +52,11 @@ class _HotelDetailsState extends State<HotelDetails> {
 
   addedToCart(Menu menu) {
     setState(() {
-      CartModel cartModel =
-          new CartModel(hotel: widget.hotel, menu: menu, count: 1);
+      CartModel cartModel = new CartModel(menu: menu, count: 1);
       cart.add(cartModel);
     });
   }
+
   int checkInCart(String id) {
     if (cart == null) return 0;
     for (CartModel i in cart) {
@@ -63,6 +64,7 @@ class _HotelDetailsState extends State<HotelDetails> {
     }
     return 0;
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -93,7 +95,8 @@ class _HotelDetailsState extends State<HotelDetails> {
             //     )
             //   ],
             // ).show(),
-            Get.toNamed('/placeOrder',arguments: cart)
+            Get.toNamed('/placeOrder',
+                arguments: CartArgument(hotel: widget.hotel, cart: cart))
           },
           child: Hero(
             tag: 'menuCard',
@@ -343,7 +346,7 @@ class _HotelDetailsState extends State<HotelDetails> {
                                     IconButton(
                                       icon: Icon(CupertinoIcons.minus),
                                       onPressed: () {
-                                        try{
+                                        try {
                                           for (CartModel i in cart) {
                                             if (i.menu.id_ == menu.id_) {
                                               setState(() {
@@ -354,7 +357,7 @@ class _HotelDetailsState extends State<HotelDetails> {
                                               });
                                             }
                                           }
-                                        }catch (e){
+                                        } catch (e) {
                                           print(e);
                                         }
                                       },

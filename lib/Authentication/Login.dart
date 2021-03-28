@@ -4,6 +4,7 @@ import 'package:flutter_eats/Db/Model/LoginModel.dart';
 import 'package:flutter_eats/Db/Services/AuthService.dart';
 import 'package:flutter_eats/Db/bloc/LoginAuthBloc.dart';
 import 'package:get/get.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -16,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   final password_controller = TextEditingController();
   Login login;
   LoginBloc loginBloc;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,16 +56,32 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 12.0),
             CupertinoButton.filled(
               onPressed: () async {
-                AuthService()
-                    .login(phone_number.text.toString().trim(),
+                if(phone_number.text.toString().trim().length==10&&password_controller.text.toString().trim().length>5)
+                  {
+                    Get.snackbar('Logging in', 'processing request !',
+                        showProgressIndicator: true,
+                        snackPosition: SnackPosition.BOTTOM);
+                    AuthService()
+                        .login(phone_number.text.toString().trim(),
                         password_controller.text.toString().trim())
-                    .then((val) => {
-                          if (val.data['success'])
-                            {
-                              saveLogin(val.data['msg']),
-                              Get.offAndToNamed('/dashboard'),
-                            }
-                        });
+                        .then((val) => {
+                      print(val),
+                      if (val.data['success'])
+                        {
+                          saveLogin(val.data['msg']),
+                          Get.offAndToNamed('/dashboard'),
+                        }
+                    })
+                        .catchErr((e) => {Get.snackbar('Error', e.toString(),
+                        snackPosition: SnackPosition.BOTTOM)
+                    });
+                  }
+                else
+                  {
+                    Get.snackbar('Invalid request', 'Enter all fields !',
+                        showProgressIndicator: true,
+                        snackPosition: SnackPosition.BOTTOM);
+                  }
               },
               child: Text('Login'),
             ),

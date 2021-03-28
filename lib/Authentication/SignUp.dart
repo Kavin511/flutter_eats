@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_eats/Db/Constants.dart';
 import 'package:flutter_eats/Db/Services/AuthService.dart';
 
 import 'package:get/get.dart';
@@ -14,31 +16,39 @@ class _SignUpState extends State<SignUp> {
   final phone_numer = TextEditingController();
   final password_controller = TextEditingController();
   final mail_controller = TextEditingController();
+  final name_controller=TextEditingController();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    void showError() {
-      Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text('rnjkfemd',
-          )));
-    }
     return Scaffold(
-      body: Builder(
-          builder: (context) =>  SafeArea(
-            child: ListView(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        title: Text('Sign up',style: TextStyle(color: kTextColor,),),
+      ),
+      body: Center(
+        child: Builder(
+            builder: (context) => ListView(
               padding: EdgeInsets.symmetric(horizontal: 24.0),
               children: <Widget>[
-                SizedBox(height: 80.0),
-                Column(
-                  children: <Widget>[
-                    // Image.asset('assets/diamond.png')
-                    Icon(Icons.person_outline, size: 50.0),
-                    SizedBox(height: 16.0),
-                    Text('Create Account'),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FlutterLogo(
+                    size: 70,
+                    curve: Curves.easeInOutCubic,
+                  )
                 ),
-                SizedBox(height: 70.0),
+                TextField(
+                  controller: name_controller,
+                  decoration: InputDecoration(
+                    filled: true,
+                    prefixIcon: Icon(CupertinoIcons.person_crop_circle),
+                    labelText: 'Name',
+                  ),
+                ),
+                SizedBox(height: 12.0),
                 TextField(
                   controller: phone_numer,
                   decoration: InputDecoration(
@@ -69,36 +79,26 @@ class _SignUpState extends State<SignUp> {
                 SizedBox(height: 12.0),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: MaterialButton(
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Text('Create Account'),
-                    ),
-                    color: Colors.blueAccent,
-                    textColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
+                  child: CupertinoButton.filled(
+                    child: Text('Create Account'),
                     onPressed: () async {
                       print('click');
                       await AuthService()
                           .register(
-                          phone_numer.text.toString().trim(),
-                          password_controller.text.toString().trim(),
-                          mail_controller.text.toString().trim())
+                              phone_numer.text.toString().trim(),
+                              password_controller.text.toString().trim(),
+                              mail_controller.text.toString().trim())
                           .then((val) => {
-                        if (val.data['success'])
-                          {
-                            saveLogin(val.data['msg']),
-                            Get.toNamed('/dashboard'),
-                          }
-                        else
-                          {
-                            showError()
-                          }
-                      })
-                          .catchError((e) => {Scaffold.of(context).showSnackBar(SnackBar(
-                        content: Text(e.toString()),
-                      ))});
+                                if (val.data['success'])
+                                  {
+                                    saveLogin(val.data['msg']),
+                                    Get.toNamed('/dashboard'),
+                                  }
+                              })
+                          .catchError((e) => {
+                                Get.snackbar('Error', e.toString(),
+                                    snackPosition: SnackPosition.BOTTOM)
+                              });
                     },
                   ),
                 ),
@@ -109,8 +109,7 @@ class _SignUpState extends State<SignUp> {
                     },
                     child: Text('Already have an account? Login'))
               ],
-            ),
-          )
+            )),
       ),
     );
   }
