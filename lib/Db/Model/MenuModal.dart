@@ -7,6 +7,7 @@ class Menu {
   String foodType;
   String availability;
   String foodItems;
+  String imageUrl;
 
   Menu({
     this.id_,
@@ -16,6 +17,7 @@ class Menu {
     this.price,
     this.foodType,
     this.availability,
+    this.imageUrl,
   });
 
   Menu.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class Menu {
     foodType = json['foodType'];
     availability = json['availability'];
     id_ = json['_id'];
+    imageUrl=json['imageUrl'];
   }
 }
 

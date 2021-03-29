@@ -6,9 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_eats/Db/Constants.dart';
 import 'package:flutter_eats/Db/Model/CartArgument.dart';
-import 'package:flutter_eats/Db/Model/CartModal.dart';
-import 'package:flutter_eats/Db/Services/jwt_decoder.dart';
-import 'package:flutter_eats/LocalStorage/Cart.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,17 +13,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 class OrderService {
   Dio dio = new Dio();
   String base_URL = "https://fluttereats.herokuapp.com/flutterEats";
-  placeOrder(CartArgument cartArgument) async {
+
+  placeOrder(
+      CartArgument cartArgument, address, pinCode, district, state) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String yourToken = prefs.getString('token');
-    Map<String, dynamic> decodedToken = JwtDecoder.decode(yourToken);
+    String token = prefs.getString('token');
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    print(decodedToken);
     var map = "";
-    // var item=jsonEncode(cart);
-    // print(item);
     List jsonList = cartArgument.cart.map((e) => e.toJson()).toList();
     print(jsonList);
-
-    print(map);
     var number = decodedToken['mobileNumber'].toString();
     try {
       return await dio.patch(base_URL + "/placeorder",
@@ -34,10 +30,10 @@ class OrderService {
             "mobileNumber": number,
             "restaurantMobileNumber": cartArgument.hotel.mobileNumber,
             "orderItems": jsonList,
-            "pincode": "2323433",
-            "state": "tN",
-            "district": "aszx",
-            "address": "szxcxbnm",
+            "pincode": pinCode,
+            "state": state,
+            "district": district,
+            "address": address,
           },
           options: Options(headers: {
             HttpHeaders.contentTypeHeader: "application/json",

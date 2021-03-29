@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +17,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
-import 'package:get/route_manager.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,6 +30,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
   CartArgument cartArgument = Get.arguments;
   bool emptyAddress = false;
   int selectedAddress = 0;
+  Razorpay _razorpay = Razorpay();
   TextEditingController address = TextEditingController();
   TextEditingController pinCode = TextEditingController();
   TextEditingController district = TextEditingController();
@@ -38,6 +39,41 @@ class _PlaceOrderState extends State<PlaceOrder> {
   AddressModal addressModal;
   List addressList;
   final _formKey = GlobalKey<FormState>();
+  int selectedPayment = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    OrderService()
+        .placeOrder(
+            cartArgument, address.text, pinCode.text, district.text, state.text)
+        .then((val) => {
+              Get.off(Order()),
+            });
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    Get.snackbar(
+        'Payment failed',
+            'Please try again',
+        snackPosition: SnackPosition.BOTTOM);
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    // Do something when an external wallet was selected
+  }
+
+  @override
+  void dispose() {
+    _razorpay.clear(); // Removes all listeners
+  }
+
   final alertStyle = AlertStyle(
     animationType: AnimationType.fromBottom,
     isCloseButton: true,
@@ -59,7 +95,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
 
   Widget addAddressButton() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: kDefaultPadding, vertical: 5),
+      margin: EdgeInsets.symmetric(horizontal: kDefaultPadding, vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: addressModal == null ? kPrimaryColor : kAccentColor,
@@ -284,18 +320,20 @@ class _PlaceOrderState extends State<PlaceOrder> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                        flex: 4,
+                        flex:5,
                         child: Row(
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: CircleAvatar(
-                                backgroundImage: AssetImage('images/food.jpg'),
+                                backgroundImage: NetworkImage(
+                                    cartArgument.cart[index].menu.imageUrl),
                                 radius: 25,
                               ),
                             ),
                             Text(
                               cartArgument.cart[index].menu.foodName,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 18,
                                 color: kTextColor,
@@ -304,15 +342,16 @@ class _PlaceOrderState extends State<PlaceOrder> {
                           ],
                         ),
                       ),
+
                       Expanded(
-                          flex: 1,
-                          child: Text(
-                            cartArgument.cart[index].count.toString(),
-                            style:
-                                TextStyle(fontSize: 18, color: kTextLightColor),
-                          )),
+                        child: Text(
+                          cartArgument.cart[index].count.toString(),
+                          style:
+                              TextStyle(fontSize: 18, color: kTextLightColor),
+                        ),
+                      ),
+                      
                       Expanded(
-                        flex: 1,
                         child: Text(
                           '\$${cartArgument.cart[index].count * int.parse(cartArgument.cart[index].menu.price)}',
                           style:
@@ -336,11 +375,26 @@ class _PlaceOrderState extends State<PlaceOrder> {
     emptyAddress = addressList.length > 0 ? true : false;
     return Scaffold(
         appBar: buildAppBar(),
-        body: SingleChildScrollView(
-          child: Column(
+        body: ListView(
             children: [
               cartSizedBox(),
               addressModal != null ? addressView() : Container(),
+              RadioListTile(
+                value: 1,
+                groupValue: selectedPayment,
+                onChanged: (v) => {
+                  setState(() => {selectedPayment = v})
+                },
+                title: Text('Cash on delivery'),
+              ),
+              RadioListTile(
+                value: 2,
+                groupValue: selectedPayment,
+                onChanged: (v) => {
+                  setState(() => {selectedPayment = v})
+                },
+                title: Text('Online Payment'),
+              ),
               Hero(
                 tag: 'menuCard',
                 child: SizedBox(
@@ -351,9 +405,11 @@ class _PlaceOrderState extends State<PlaceOrder> {
                   ),
                 ),
               ),
-              addressModal != null ? placeOrderButton() : Container()
+              addressModal != null ? Padding(
+                padding: const EdgeInsets.only(bottom:8.0),
+                child: placeOrderButton(),
+              ) : Container()
             ],
-          ),
         ));
   }
 
@@ -366,9 +422,15 @@ class _PlaceOrderState extends State<PlaceOrder> {
         onTap: () async => {
           prefs = await SharedPreferences.getInstance(),
           print(prefs.getString('token')),
-          OrderService().placeOrder(cartArgument).then((val) => {
-                Get.off(Profile()),
-              })
+          if (selectedPayment == 1)
+            OrderService()
+                .placeOrder(cartArgument, address.text, pinCode.text,
+                    district.text, state.text)
+                .then((val) => {
+                      Get.off(Order()),
+                    })
+          else
+            openCheckOut()
         },
         child: SizedBox(
           width: size.width,
@@ -402,6 +464,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
       ),
     );
   }
+
   AppBar buildAppBar() {
     return AppBar(
       backgroundColor: Colors.transparent,
@@ -416,74 +479,22 @@ class _PlaceOrderState extends State<PlaceOrder> {
       centerTitle: true,
     );
   }
+
+  void openCheckOut() async {
+    var options = {
+      'key': 'rzp_test_nh2ppC60H1NlZn',
+      'amount': 28200,
+      'name': 'kavin',
+      'description': 'Payment',
+      'prefill': {'contact': '8888888888', 'email': 'test@razorpay.com'},
+      'external': {
+        'wallets': ['paytm']
+      }
+    };
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      debugPrint(e);
+    }
+  }
 }
-// SizedBox checkAddress() {
-//   return !emptyAddress
-//       ? SizedBox(
-//           height: 55,
-//           child: GestureDetector(
-//             onTap: () => {address_alert().show()},
-//             child: addAddressButton(),
-//           ),
-//         )
-//       : SizedBox(
-//           height: addressList.length * 70.0,
-//           child: addressListView(),
-//         );
-// }
-
-// ListView addressListView() {
-//   return ListView.builder(
-//     itemCount: addressList.length,
-//     itemBuilder: (context, index) {
-//       Map<String, dynamic> addressMap = json.decode(addressList[index]);
-//       return Dismissible(
-//         key: UniqueKey(),
-//         onDismissed: (direction) async {
-//           deleteAddressFromList(addressList[index]);
-//         },
-//         child: RadioListTile(
-//           value: index,
-//           title: Text(addressMap['address']),
-//           groupValue: 1,
-//           onChanged: (value) {
-//             setState(() {});
-//           },
-//         ),
-//         background: Container(
-//           color: Colors.red,
-//           padding: EdgeInsets.symmetric(horizontal: 20),
-//           alignment: AlignmentDirectional.centerStart,
-//           child: Icon(
-//             Icons.delete,
-//             color: Colors.white,
-//           ),
-//         ),
-//         secondaryBackground: Container(
-//           color: Colors.red,
-//           padding: EdgeInsets.symmetric(horizontal: 20),
-//           alignment: AlignmentDirectional.centerEnd,
-//           child: Icon(
-//             Icons.delete,
-//             color: Colors.white,
-//           ),
-//         ),
-//       );
-//     },
-//   );
-// }
-
-// deleteAddressFromList(addressEntry) {
-//   List addressList =
-//       addressStorage.getAddress() != null ? addressStorage.getAddress() : [];
-//   List finalList = [];
-//   for (int i = 0; i < addressList.length; i++) {
-//     if (addressEntry != addressList[i]) finalList.add(addressList[i]);
-//   }
-//   if (finalList.length == 0) {
-//     setState(() {
-//       emptyAddress = true;
-//     });
-//   }
-//   addressStorage.addAddress(finalList);
-// }

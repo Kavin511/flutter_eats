@@ -32,8 +32,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class HotelDetails extends StatefulWidget {
   Hotel hotel;
-
-  HotelDetails({this.hotel});
+String imageUrl;
+  HotelDetails({this.hotel,this.imageUrl});
 
   @override
   _HotelDetailsState createState() => _HotelDetailsState();
@@ -101,7 +101,7 @@ class _HotelDetailsState extends State<HotelDetails> {
           child: Hero(
             tag: 'menuCard',
             child: Container(
-              margin: EdgeInsets.only(bottom: .05),
+              margin: EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 color: kPrimaryColor,
@@ -136,8 +136,7 @@ class _HotelDetailsState extends State<HotelDetails> {
                 decoration: new BoxDecoration(
                   color: Colors.transparent,
                   image: DecorationImage(
-                      image: AssetImage(
-                        'images/hotels.jpg',
+                      image: AssetImage(widget.imageUrl
                       ),
                       fit: BoxFit.cover),
                 ),
@@ -236,7 +235,7 @@ class _HotelDetailsState extends State<HotelDetails> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 5.0),
                           child: CircleAvatar(
-                            backgroundImage: AssetImage('images/food.jpg'),
+                            backgroundImage: NetworkImage(menu.imageUrl),
                             radius: 50,
                           ),
                         ),
@@ -456,7 +455,7 @@ class _HotelDetailsState extends State<HotelDetails> {
               }),
         );
     return Scaffold(
-        backgroundColor: kAccentColor,
+        backgroundColor: Colors.white,
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           centerTitle: true,
@@ -476,168 +475,161 @@ class _HotelDetailsState extends State<HotelDetails> {
           ),
         ),
         body: SingleChildScrollView(
-          child: Column(
+          child: Wrap(
             children: [
-              SizedBox(
-                height: size.height,
-                child: Stack(
-                  children: [
-                    Container(
-                      // margin: EdgeInsets.only(bottom: size.height * .1,),
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            child: hotelImage(),
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                                top: size.height * .35, bottom: 0),
-                            padding: EdgeInsets.only(
-                                top: size.height * .05,
-                                left: kDefaultPadding,
-                                right: kDefaultPadding),
-                            height: size.height,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30))),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      widget.hotel.hotelName,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline4
-                                          .copyWith(
-                                              color: kTextColor,
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    IconButton(
-                                      iconSize: 40,
-                                      icon: Image.asset(
-                                        'images/square.png',
-                                        color: kTextColor,
-                                      ),
-                                      onPressed: () {
-                                        showCupertinoModalBottomSheet(
-                                          elevation: 20,
-                                          barrierColor:
-                                              Colors.black.withOpacity(.6),
-                                          context: context,
-                                          builder: (context) => Container(
-                                              height: size.height * .2,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  Material(
-                                                      child: Container(
-                                                    child: IconButton(
-                                                      iconSize: 40,
-                                                      icon: Icon(
-                                                        CupertinoIcons.mail,
-                                                        size: 30,
-                                                        color: kTextColor,
-                                                      ),
-                                                      onPressed: () async {
-                                                        final Uri
-                                                            _emailLaunchUri =
-                                                            Uri(
-                                                                scheme:
-                                                                    'mailto',
-                                                                path: widget
-                                                                    .hotel
-                                                                    .email,
-                                                                queryParameters: {
-                                                              'subject':
-                                                                  'Reg: food related queries!'
-                                                            });
-                                                        if (await canLaunch(
-                                                            _emailLaunchUri
-                                                                .toString())) {
-                                                          await launch(
-                                                              _emailLaunchUri
-                                                                  .toString());
-                                                        } else {
-                                                          throw 'Could not launch $_emailLaunchUri';
-                                                        }
-                                                      },
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: kMainColor,
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                  )),
-                                                  Material(
-                                                      child: Container(
-                                                    child: IconButton(
-                                                      iconSize: 40,
-                                                      icon: Icon(
-                                                        CupertinoIcons.phone,
-                                                        size: 30,
-                                                        color: kTextColor,
-                                                      ),
-                                                      onPressed: () async {
-                                                        print('clicekd');
-                                                        String url = 'tel:' +
-                                                            widget.hotel
-                                                                .mobileNumber;
-                                                        if (await canLaunch(
-                                                            url)) {
-                                                          await launch(url);
-                                                        } else {
-                                                          throw 'Could not launch $url';
-                                                        }
-                                                      },
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: kMainColor,
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                  )),
-                                                  Material(
-                                                      child: Container(
-                                                    child: IconButton(
-                                                      iconSize: 40,
-                                                      icon: Icon(
-                                                        CupertinoIcons
-                                                            .location_solid,
-                                                        size: 30,
-                                                        color: kTextColor,
-                                                      ),
-                                                      onPressed: () {},
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: kMainColor,
-                                                    ),
-                                                  )),
-                                                ],
-                                              )),
-                                        );
-                                      },
-                                    )
-                                  ],
-                                ),
-                                menuList(),
-                                cart.length > 0 ? cartView() : Container(),
-                              ],
+              Stack(
+                children: [
+                  Positioned(
+                    child: hotelImage(),
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(
+                        top: size.height * .35, bottom: 0),
+                    padding: EdgeInsets.only(
+                        top: size.height * .05,
+                        left: kDefaultPadding,
+                        right: kDefaultPadding),
+                    // height: size.height,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30))),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              widget.hotel.hotelName,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5
+                                  .copyWith(
+                                      color: kTextColor,
+                                      fontWeight: FontWeight.bold),
                             ),
-                          ),
-                        ],
-                      ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: IconButton(
+                                iconSize: 40,
+                                icon: Image.asset(
+                                  'images/square.png',
+                                  color: kTextColor,
+                                ),
+                                onPressed: () {
+                                  showCupertinoModalBottomSheet(
+                                    elevation: 20,
+                                    barrierColor:
+                                        Colors.black.withOpacity(.6),
+                                    context: context,
+                                    builder: (context) => Container(
+                                        height: size.height * .2,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .spaceEvenly,
+                                          children: [
+                                            Material(
+                                                child: Container(
+                                              child: IconButton(
+                                                iconSize: 40,
+                                                icon: Icon(
+                                                  CupertinoIcons.mail,
+                                                  size: 30,
+                                                  color: kTextColor,
+                                                ),
+                                                onPressed: () async {
+                                                  final Uri
+                                                      _emailLaunchUri =
+                                                      Uri(
+                                                          scheme:
+                                                              'mailto',
+                                                          path: widget
+                                                              .hotel
+                                                              .email,
+                                                          queryParameters: {
+                                                        'subject':
+                                                            'Reg: food related queries!'
+                                                      });
+                                                  if (await canLaunch(
+                                                      _emailLaunchUri
+                                                          .toString())) {
+                                                    await launch(
+                                                        _emailLaunchUri
+                                                            .toString());
+                                                  } else {
+                                                    throw 'Could not launch $_emailLaunchUri';
+                                                  }
+                                                },
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: kMainColor,
+                                                shape: BoxShape.circle,
+                                              ),
+                                            )),
+                                            Material(
+                                                child: Container(
+                                              child: IconButton(
+                                                iconSize: 40,
+                                                icon: Icon(
+                                                  CupertinoIcons.phone,
+                                                  size: 30,
+                                                  color: kTextColor,
+                                                ),
+                                                onPressed: () async {
+                                                  print('clicekd');
+                                                  String url = 'tel:' +
+                                                      widget.hotel
+                                                          .mobileNumber;
+                                                  if (await canLaunch(
+                                                      url)) {
+                                                    await launch(url);
+                                                  } else {
+                                                    throw 'Could not launch $url';
+                                                  }
+                                                },
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: kMainColor,
+                                                shape: BoxShape.circle,
+                                              ),
+                                            )),
+                                            Material(
+                                                child: Container(
+                                              child: IconButton(
+                                                iconSize: 40,
+                                                icon: Icon(
+                                                  CupertinoIcons
+                                                      .location_solid,
+                                                  size: 30,
+                                                  color: kTextColor,
+                                                ),
+                                                onPressed: () {},
+                                              ),
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: kMainColor,
+                                              ),
+                                            )),
+                                          ],
+                                        )),
+                                  );
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                        menuList(),
+                        cart.length > 0 ? cartView() : Container(),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),

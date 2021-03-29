@@ -14,8 +14,8 @@ import 'HotelDetails.dart';
 
 class HotelCard extends StatelessWidget {
   Hotel hotel;
-
-  HotelCard({this.hotel});
+String imageUrl;
+  HotelCard({this.hotel,this.imageUrl});
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -31,6 +31,7 @@ class HotelCard extends StatelessWidget {
         child: GestureDetector(
           onTap: () => Get.to(HotelDetails(
             hotel: hotel,
+            imageUrl:imageUrl
           )),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,7 +43,7 @@ class HotelCard extends StatelessWidget {
                   tag: '${hotel.mobileNumber}',
                   child: ClipRRect(
                     child: Image.asset(
-                      'images/hotels.jpg',
+                      imageUrl,
                       width: size.width,
                       fit: BoxFit.fitWidth,
                     ),

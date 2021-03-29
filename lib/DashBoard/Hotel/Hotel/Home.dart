@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
               print('error do');
               return new Container(
                 child: Center(
-                    child: Text('No menu items found Add new Items...')),
+                    child: Text('No restaurants found')),
               );
             case Status.REFRESHING:
               return new Container(

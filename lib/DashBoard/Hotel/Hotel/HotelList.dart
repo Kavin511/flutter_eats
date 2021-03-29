@@ -16,6 +16,7 @@ class HotelList extends StatefulWidget {
 }
 
 class _HotelListState extends State<HotelList> {
+  List<String> hotelImageUrl=["hotels_images/hotels.jpg","hotels_images/hotel1.jpg","hotels_images/hotel2.jpg","hotels_images/hotel3.jpg","hotels_images/hotel4.jpg","hotels_images/hotel5.jpg"];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,7 +30,7 @@ class _HotelListState extends State<HotelList> {
                   // mainAxisSpacing: 0,
                     crossAxisCount: 1, childAspectRatio: 1,crossAxisSpacing: 0),
                 itemBuilder: (context, index) =>
-                    HotelCard(hotel: widget.hotelList[index])),
+                    HotelCard(hotel: widget.hotelList[index],imageUrl:hotelImageUrl[index%6])),
           )
           : Center(
               child: Text(

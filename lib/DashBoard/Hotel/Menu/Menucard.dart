@@ -66,7 +66,7 @@ class _MenuCardState extends State<MenuCard> {
                   Padding(
                     padding: const EdgeInsets.only(top: 5.0),
                     child: CircleAvatar(
-                      backgroundImage: AssetImage('images/food.jpg'),
+                      backgroundImage: NetworkImage(widget.menu.imageUrl),
                       radius: 50,
                     ),
                   ),

@@ -9,9 +9,7 @@ import 'file:///D:/C%20files/AndroidStudioProjects/flutter_eats/lib/DashBoard/Ho
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'DashBoard/DashBoard.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -19,7 +17,6 @@ Future<void> main() async {
   print(token);
   runApp(MyApp(token: token));
 }
-
 class MyApp extends StatelessWidget {
   static var route = [
     GetPage(name: '/', page: () => LoginPage()),
